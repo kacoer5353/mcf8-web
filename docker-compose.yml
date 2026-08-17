@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # Web application service running Apache and PHP
+  web:
+    build: .
+    container_name: mcf8_web
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html:z
+    restart: always
+    depends_on:
+      - db
+
+  # Database service running MySQL 8.0
+  db:
+    image: mysql:8.0
+    container_name: mcf8_db_server
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-mcf8_db}
+      MYSQL_USER: ${DB_USER:-mcf8_user}
+      MYSQL_PASSWORD: ${DB_PASS:-mcf8_password_123}
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      # Map SQL schema to automatically initialize tables and mock data on first launch
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u $$MYSQL_USER -p$$MYSQL_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Optional phpMyAdmin tool for database visual inspection
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: mcf8_phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+    depends_on:
+      - db
+
+volumes:
+  db_data:
