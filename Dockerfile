@@ -1,6 +1,11 @@
 FROM php:8.2-apache
 
-RUN docker-php-ext-install pdo pdo_pgsql
+# Install PostgreSQL client headers then build PDO + pgsql
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+       libpq-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    && docker-php-ext-install pdo pdo_pgsql
 
 RUN a2enmod rewrite
 
