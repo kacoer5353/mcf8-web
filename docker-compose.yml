@@ -13,38 +13,34 @@ services:
     depends_on:
       - db
 
-  # Database service running MySQL 8.0
+  # Database service running PostgreSQL
   db:
-    image: mysql:8.0
+    image: postgres:15
     container_name: mcf8_db_server
     restart: always
     environment:
-      MYSQL_DATABASE: ${DB_NAME:-mcf8_db}
-      MYSQL_USER: ${DB_USER:-mcf8_user}
-      MYSQL_PASSWORD: ${DB_PASS:-mcf8_password_123}
-      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+      POSTGRES_DB: ${DB_NAME:-mcf8_db}
+      POSTGRES_USER: ${DB_USER:-mcf8_user}
+      POSTGRES_PASSWORD: ${DB_PASS:-mcf8_password_123}
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data:/var/lib/postgresql/data
       # Map SQL schema to automatically initialize tables and mock data on first launch
-      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - ./schema.postgres.sql:/docker-entrypoint-initdb.d/schema.sql
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u $$MYSQL_USER -p$$MYSQL_PASSWORD --silent"]
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB -h localhost"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  # Optional phpMyAdmin tool for database visual inspection
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: mcf8_phpmyadmin
+  # Optional lightweight DB GUI for inspection (Adminer supports PostgreSQL)
+  adminer:
+    image: adminer:latest
+    container_name: mcf8_adminer
     restart: always
     ports:
-      - "8080:80"
-    environment:
-      PMA_HOST: db
-      PMA_USER: root
+      - "8080:8080"
     depends_on:
       - db
 
