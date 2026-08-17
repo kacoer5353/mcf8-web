@@ -9,7 +9,7 @@ RUN a2enmod rewrite
 
 # Update Apache configuration to change DocumentRoot to /public.
 # This keeps private app files protected from direct HTTP access.
-ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+ENV APACHE_DOCUMENT_ROOT=/var/www/html
 
 # Explicitly set the hostname to avoid the default "Could not reliably determine the server's fully qualified domain name" warning.
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
