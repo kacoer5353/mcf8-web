@@ -60,7 +60,7 @@ $config = [
     'use_logo_img' => true,
     'logo_img'     => 'assets/img/logo.svg', // Path relative to public/
     
-    'mc_ip'       => $_ENV['MC_SERVER_IP'] ?? 'play.mcf8.pl',
+    'mc_ip'       => $_ENV['MC_SERVER_IP'] ?? 'play.mcf8',
     'mc_port'     => (int)($_ENV['MC_SERVER_PORT'] ?? 25565),
     
     'discord_url' => $_ENV['DISCORD_URL'] ?? 'https://discord.gg/mcf8',

@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const copiers = document.querySelectorAll('.ip-copier');
     copiers.forEach(copier => {
         copier.addEventListener('click', () => {
-            const ipToCopy = copier.getAttribute('data-ip') || 'play.mcf8.pl';
+            const ipToCopy = copier.getAttribute('data-ip') || 'play.mcf8';
             const badge = copier.querySelector('.ip-badge');
             
             navigator.clipboard.writeText(ipToCopy)
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 3. Minecraft Server Status API Polling
-    const serverIP = window.serverConfig?.ip || 'play.mcf8.pl';
+    const serverIP = window.serverConfig?.ip || 'play.mcf8';
     const apiUrl = `https://api.mcsrvstat.us/2/${serverIP}`;
 
     // Elements to update

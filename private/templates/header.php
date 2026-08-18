@@ -24,7 +24,7 @@ if (empty($_SESSION['csrf_token'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Oficjalna strona serwera Minecraft mcf8.pl. Dołącz do nas już dzisiaj! Jeden tryb: OP Factions + SV bez ułatwień pay-to-win.">
+    <meta name="description" content="Oficjalna strona serwera Minecraft mcf8. Dołącz do nas już dzisiaj! Jeden tryb: OP Factions + SV bez ułatwień pay-to-win.">
     <title><?php if (!empty($full_title)) { echo htmlspecialchars($full_title); } else { echo htmlspecialchars($config['server_name']) . ' | ' . htmlspecialchars($page_title ?? '1 tryb: OP Factions + SV'); } ?></title>
     
     <!-- Include styles from public path -->
